@@ -11,8 +11,7 @@ object Main {
   def main(args: Array[String]) {
     GameRunner.askTimeOut()
     do {
-      GameRunner.runGame(new UserPlayer(PieceColor.Black), new UserPlayer(PieceColor.White))
+      GameRunner.runGame(AI(PieceColor.Black), new UserPlayer(PieceColor.White))
     } while (GameRunner.askToPlayAgain() == 0)
-    GameRunner.dispose()
   }
 }
