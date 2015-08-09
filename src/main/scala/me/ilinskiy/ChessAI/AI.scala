@@ -1,8 +1,8 @@
 package me.ilinskiy.ChessAI
 
 import me.ilinskiy.chess.annotations.NotNull
-import me.ilinskiy.chess.chessBoard.{Board, PieceColor, PieceType}
-import me.ilinskiy.chess.game.{GameUtil, Move, Player}
+import me.ilinskiy.chess.chessBoard.{Board, ChessBoardUtil, PieceColor, PieceType}
+import me.ilinskiy.chess.game.{Move, Player}
 
 /**
  * Author: Svyatoslav Ilinskiy
@@ -14,7 +14,7 @@ class AI(myColor: PieceColor) extends Player {
   override def getPlayerColor: PieceColor = myColor
 
   override def getMove(@NotNull board: Board): Move = {
-    GameUtil.getAvailableMoves(myColor, board).get(0)
+    MoveMaker.getMove(ChessBoardUtil.getBoardWrapperCopy(board), myColor)
   }
 
   override def getPieceTypeForPromotedPawn: PieceType = PieceType.Queen
