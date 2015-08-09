@@ -13,6 +13,7 @@ class AI(myColor: PieceColor) extends Player {
   override def getPlayerColor: PieceColor = myColor
 
   override def getMove(board: Board): Move = {
+    AI.movesMade += 1
     MoveMaker.getMove(ChessBoardUtil.getBoardWrapperCopy(board), myColor)
   }
 
@@ -20,5 +21,8 @@ class AI(myColor: PieceColor) extends Player {
 }
 
 object AI {
+  var movesMade: Int = 0
+  val averageGameLength = 40
+
   def apply(pieceColor: PieceColor) = new AI(pieceColor)
 }

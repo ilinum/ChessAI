@@ -40,8 +40,10 @@ object PositionEvaluator {
     GameUtil.getAllPieces(color, board).foldLeft(0) { (acc: Int, pos: Coordinates) =>
       val pieceStrength = board.getPieceAt(pos).getType match {
         case Pawn => PAWN_STRENGTH
-        case Knight => KNIGHT_STRENGTH_AT_THE_BEGINNING //todo: use knight at beginning and end
-        case Bishop => BISHOP_STRENGTH_AT_THE_BEGINNING
+        case Knight if AI.movesMade < (AI.averageGameLength / 2) => KNIGHT_STRENGTH_AT_THE_BEGINNING
+        case Knight =>  KNIGHT_STRENGTH_AT_THE_END
+        case Bishop if AI.movesMade < (AI.averageGameLength / 2) => BISHOP_STRENGTH_AT_THE_BEGINNING
+        case Bishop => BISHOP_STRENGTH_AT_THE_END
         case Rook => ROOK_STRENGTH
         case Queen => QUEEN_STRENGTH
         case _ => 0
