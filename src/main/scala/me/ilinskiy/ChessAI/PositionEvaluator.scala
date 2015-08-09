@@ -18,19 +18,20 @@ object PositionEvaluator {
   val QUEEN_STRENGTH = 10
 
   def evaluatePositionAfterMove(board: BoardWrapper, move: Move): Int = {
-    board.setPieceAccordingToMove(move)
-    val strength: Int = evaluateCurrentPosition(board.getInner)
-    board.setPieceAccordingToMove(move.inverse()) //roll back
-    strength
-    //todo: use this: ChessBoardUtil.makeMoveAndEvaluate(board, move, (b) => evaluateCurrentPosition(b))
+    ChessBoardUtil.makeMoveAndEvaluate(board.getInner, move, (b) => evaluateCurrentPosition(b))
   }
 
   def evaluateCurrentPosition(board: Board): Int = {
-    val opponentColor = board.whoseTurnIsIt()
-    val ourColor = ChessBoardUtil.inverse(opponentColor)
+    val ourColor = board.whoseTurnIsIt()
+    val opponentColor = ChessBoardUtil.inverse(ourColor)
+    val difference = strengthForColor(ourColor, board) - strengthForColor(opponentColor, board)
 
-    strengthForColor(ourColor, board) - strengthForColor(opponentColor, board)
 
+    (GameUtil.getAvailableMoves(opponentColor, board).size(), GameUtil.getAvailableMoves(ourColor, board).size()) match {
+      case (0, i) if i > 0 => Int.MaxValue //we win!
+      case (0, 0) if difference < 0 => Int.MaxValue / 2 //we accept the draw because we're losing
+      case _ => difference
+    }
   }
 
   def strengthForColor(color: PieceColor, board: Board): Int = {
@@ -45,7 +46,6 @@ object PositionEvaluator {
         case Queen => QUEEN_STRENGTH
         case _ => 0
       }
-      //todo: what if game is over and there are no available moves?
       pieceStrength + acc
     }
   }

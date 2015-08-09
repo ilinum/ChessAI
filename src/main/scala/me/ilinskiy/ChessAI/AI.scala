@@ -1,6 +1,5 @@
 package me.ilinskiy.ChessAI
 
-import me.ilinskiy.chess.annotations.NotNull
 import me.ilinskiy.chess.chessBoard.{Board, ChessBoardUtil, PieceColor, PieceType}
 import me.ilinskiy.chess.game.{Move, Player}
 
@@ -13,7 +12,7 @@ class AI(myColor: PieceColor) extends Player {
 
   override def getPlayerColor: PieceColor = myColor
 
-  override def getMove(@NotNull board: Board): Move = {
+  override def getMove(board: Board): Move = {
     MoveMaker.getMove(ChessBoardUtil.getBoardWrapperCopy(board), myColor)
   }
 
