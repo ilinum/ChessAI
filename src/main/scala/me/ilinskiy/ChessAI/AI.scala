@@ -15,8 +15,8 @@ class AI(myColor: PieceColor) extends Player {
   override def getMove(board: Board): Move = {
     assert(!GameUtil.getAvailableMoves(myColor, board).isEmpty)
     AI.movesMade += 1
-    val secondsToDecide = GameRunner.TIMEOUT_IN_SECONDS
-    MoveMaker.getMove(ChessBoardUtil.getBoardWrapperCopy(board), myColor, secondsToDecide)
+    Time.moveNeededBy = Some(System.currentTimeMillis() + (GameRunner.TIMEOUT_IN_SECONDS - 1) * 1000) //yay for magic numbers!
+    MoveMaker.getMove(ChessBoardUtil.getBoardWrapperCopy(board), myColor)
   }
 
   override def getPieceTypeForPromotedPawn: PieceType = PieceType.Queen
