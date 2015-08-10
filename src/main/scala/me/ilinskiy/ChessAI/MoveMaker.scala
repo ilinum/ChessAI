@@ -26,7 +26,6 @@ object MoveMaker {
         case (m, `maxScore`) => m
       }
       assert(allGoodMoves.nonEmpty)
-      while (true) {}
       AIUtil.randomElement(allGoodMoves)
     }
 
