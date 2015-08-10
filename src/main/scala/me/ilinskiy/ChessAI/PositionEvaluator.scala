@@ -26,7 +26,6 @@ object PositionEvaluator {
     val opponentColor = ChessBoardUtil.inverse(ourColor)
     val difference = strengthForColor(ourColor, board) - strengthForColor(opponentColor, board)
 
-
     (GameUtil.getAvailableMoves(opponentColor, board).size(), GameUtil.getAvailableMoves(ourColor, board).size()) match {
       case (0, i) if i > 0 => Int.MaxValue //we win!
       case (0, 0) if difference < 0 => Int.MaxValue / 2 //we accept the draw because we're losing
