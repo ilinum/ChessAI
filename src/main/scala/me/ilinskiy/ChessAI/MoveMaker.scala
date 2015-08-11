@@ -26,7 +26,7 @@ object MoveMaker {
       (move, PositionEvaluator.evaluatePositionAfterMove(board, move))
     }
 
-    val maxScore = evaluatedPositions.maxBy(_._2)._2
+    val maxScore = evaluatedPositions.unzip._2.max
     val allGoodMoves = evaluatedPositions.collect {
       case (m, `maxScore`) => m
     }
@@ -41,12 +41,13 @@ object MoveMaker {
           pickGoodMoves(GameUtil.getAvailableMoves(ourColor, board.getInner), board, depth + 1, color)
         })
         val sum = opponentMoves.map(PositionEvaluator.evaluatePositionAfterMove(board, _)).sum
-        if (color != ourColor) (m, sum * -1)
-        else (m, sum)
+        (m, sum)
       }
-      val maxOpponentMoves = opponentMoves.maxBy(_._2)._2
+      val opponentMovesMaxOrMin =
+        if (color != ourColor) opponentMoves.unzip._2.min
+        else opponentMoves.unzip._2.max
       opponentMoves.collect {
-        case (m, `maxOpponentMoves`) => m
+        case (m, `opponentMovesMaxOrMin`) => m
       }
     }
   }
