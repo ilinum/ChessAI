@@ -8,8 +8,6 @@ import me.ilinskiy.chess.game.{GameRunner, GameUtil, Move, Player}
  * Date: 8/8/15.
  */
 class AI(myColor: PieceColor) extends Player {
-  override def copy(): Player = AI(myColor)
-
   override def getPlayerColor: PieceColor = myColor
 
   override def getMove(board: Board): Move = {
