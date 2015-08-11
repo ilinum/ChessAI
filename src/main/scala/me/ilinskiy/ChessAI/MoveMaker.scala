@@ -49,16 +49,6 @@ object MoveMaker {
         case (m, `maxOpponentMoves`) => m
       }
     }
-    /*
-    for (m: Move <- allGoodMoves) {
-
-      opponentMoves
-//      .makeMoveAndEvaluate(board.getInner, m, new BoardOperation[Seq[Move]] {
-//        pickGoodMoves(GameUtil.getAvailableMovesForPiece(ourColor), board)
-//      })
-
-    }
-    allGoodMoves*/
   }
 
   def getMove(board: BoardWrapper, color: PieceColor): Move = {
@@ -78,18 +68,5 @@ object MoveMaker {
         }
       case _ => AIUtil.randomElement(pickGoodMoves(availableMoves, board, 0, color))
     }
-    /*if (GameRunner.TIMEOUT_IN_SECONDS > 0) {
-      val future: Future[Move] = Future {
-        pickMove(availableMoves)
-      }
-      val secondsToDecide = Time.moveNeededBy
-      try {
-        Await.result(future, secondsToDecide seconds)
-      } catch {
-        case e: Exception => AIUtil.randomElement(availableMoves) //probably timeout but could've been something else
-      }
-    } else {
-      pickMove(availableMoves)
-    }*/
   }
 }
