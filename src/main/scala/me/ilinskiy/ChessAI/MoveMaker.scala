@@ -1,6 +1,6 @@
 package me.ilinskiy.ChessAI
 
-import me.ilinskiy.chess.chessBoard.{BoardWrapper, PieceColor}
+import me.ilinskiy.chess.chessBoard.{BoardWrapper, ChessBoardUtil, PieceColor}
 import me.ilinskiy.chess.game.{GameRunner, GameUtil, Move}
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -16,8 +16,6 @@ object MoveMaker {
   val maxRecursionDepth =
     if (GameRunner.TIMEOUT_IN_SECONDS < 1) Int.MaxValue
     else GameRunner.TIMEOUT_IN_SECONDS
-
-
 
   def pickGoodMoves(availableMoves: Seq[Move], board: BoardWrapper, depth: Int, color: PieceColor): Seq[Move] = {
     import scala.collection.JavaConversions._
@@ -35,19 +33,21 @@ object MoveMaker {
     if (depth > maxRecursionDepth) allGoodMoves
     else {
       val ourColor = board.getPieceAt(allGoodMoves.head.getInitialPosition).getColor
-      assert(ourColor != PieceColor.Empty)
-      val opponentMoves = allGoodMoves.map { (m: Move) =>
+      val opponentColor = ChessBoardUtil.inverse(ourColor)
+
+      val goodAccordingOpponentMove = allGoodMoves.map { (m: Move) =>
         val opponentMoves: Seq[Move] = AIUtil.makeMoveAndEvaluate(board, m, (board: BoardWrapper) => {
-          pickGoodMoves(GameUtil.getAvailableMoves(ourColor, board.getInner), board, depth + 1, color)
+          pickGoodMoves(GameUtil.getAvailableMoves(opponentColor, board.getInner), board, depth + 1, color)
         })
-        val sum = opponentMoves.map(PositionEvaluator.evaluatePositionAfterMove(board, _)).sum
+
+        val sum = opponentMoves.map(PositionEvaluator.evaluatePositionAfterMove(board, _) * -1).sum
         (m, sum)
       }
-      val opponentMovesMaxOrMin =
-        if (color != ourColor) opponentMoves.unzip._2.min
-        else opponentMoves.unzip._2.max
-      opponentMoves.collect {
-        case (m, `opponentMovesMaxOrMin`) => m
+
+      val max = goodAccordingOpponentMove.unzip._2.max
+
+      goodAccordingOpponentMove.collect {
+        case (m , `max`) => m
       }
     }
   }
@@ -65,7 +65,9 @@ object MoveMaker {
         try {
           Await.result(future, milliSecondsToDecide millisecond)
         } catch {
-          case e: Exception => AIUtil.randomElement(availableMoves) //probably timeout but could've been something else
+          case e: Exception =>
+
+            AIUtil.randomElement(availableMoves) //probably timeout but could've been something else
         }
       case _ => AIUtil.randomElement(pickGoodMoves(availableMoves, board, 0, color))
     }
