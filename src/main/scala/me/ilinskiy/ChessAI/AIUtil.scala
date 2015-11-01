@@ -18,4 +18,8 @@ object AIUtil {
     board.setPieceAccordingToMove(move.inverse())
     res
   }
+
+  implicit class InvertibleMove(underlying: Move) {
+    def inverse(): Move = new Move(underlying.getNewPosition, underlying.getInitialPosition)
+  }
 }
