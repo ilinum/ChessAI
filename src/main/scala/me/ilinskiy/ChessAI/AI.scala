@@ -1,6 +1,7 @@
 package me.ilinskiy.ChessAI
 
-import me.ilinskiy.chess.chessBoard.{Board, ChessBoardUtil, PieceColor, PieceType}
+import me.ilinskiy.ChessAI.AIUtil.Time
+import me.ilinskiy.chess.chessBoard._
 import me.ilinskiy.chess.game.{GameRunner, GameUtil, Move, Player}
 
 /**
@@ -13,8 +14,12 @@ class AI(myColor: PieceColor) extends Player {
   override def getMove(board: Board): Move = {
     assert(!GameUtil.getAvailableMoves(myColor, board).isEmpty)
     AI.movesMade += 1
-    Time.moveNeededBy = Some(System.currentTimeMillis() + (GameRunner.TIMEOUT_IN_SECONDS - 1) * 1000) //yay for magic numbers!
-    MoveMaker.getMove(ChessBoardUtil.getBoardWrapperCopy(board), myColor)
+    val timeout: Long = GameRunner.TIMEOUT_IN_SECONDS.secondsToMillis
+    val moveNeededBy =
+      if (timeout > 0) Some(System.currentTimeMillis() + timeout) //yay for magic numbers!
+      else None
+    val boardWrapper: BoardWrapper = ChessBoardUtil.getBoardWrapperCopy(board)
+    MoveMaker.getMove(boardWrapper, myColor, moveNeededBy)
   }
 
   override def getPieceTypeForPromotedPawn: PieceType = PieceType.Queen
@@ -23,6 +28,4 @@ class AI(myColor: PieceColor) extends Player {
 object AI {
   var movesMade: Int = 0
   val averageGameLength = 40
-
-  def apply(pieceColor: PieceColor) = new AI(pieceColor)
 }

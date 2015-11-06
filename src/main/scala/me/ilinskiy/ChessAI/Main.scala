@@ -12,7 +12,7 @@ object Main {
   def main(args: Array[String]) {
     GameRunner.askTimeOut()
     do {
-      GameRunner.runGame(AI(PieceColor.Black), new JSwingUserPlayer(PieceColor.White))
+      GameRunner.runGame(new AI(PieceColor.Black), new JSwingUserPlayer(PieceColor.White))
     } while (GameRunner.askToPlayAgain())
   }
 }

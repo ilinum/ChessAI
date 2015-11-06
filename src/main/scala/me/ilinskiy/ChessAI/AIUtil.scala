@@ -22,4 +22,8 @@ object AIUtil {
   implicit class InvertibleMove(underlying: Move) {
     def inverse(): Move = new Move(underlying.getNewPosition, underlying.getInitialPosition)
   }
+
+  implicit class Time(underlying: Int) {
+    def secondsToMillis: Long = underlying * 1000L
+  }
 }
