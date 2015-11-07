@@ -18,12 +18,10 @@ object MoveMaker {
     else GameRunner.TIMEOUT_IN_SECONDS
 
   def pickGoodMoves(availableMoves: Seq[Move], board: BoardWrapper, depth: Int, color: PieceColor): Seq[Move] = {
+    val scores: Seq[Int] = availableMoves.map(PositionEvaluator.evaluatePositionAfterMove(board, _))
 
-    val evaluatedPositions: Seq[(Move, Int)] = availableMoves.map { move: Move =>
-      (move, PositionEvaluator.evaluatePositionAfterMove(board, move))
-    }
-
-    val maxScore = evaluatedPositions.unzip._2.max
+    val maxScore = scores.max
+    val evaluatedPositions = availableMoves.zip(scores)
     evaluatedPositions.collect {
       case (m, `maxScore`) => m
     }
