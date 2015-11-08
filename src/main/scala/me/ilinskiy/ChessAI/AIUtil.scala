@@ -1,8 +1,9 @@
 package me.ilinskiy.ChessAI
 
-import me.ilinskiy.chess.chessBoard.BoardWrapper
+import me.ilinskiy.chess.chessBoard.{BoardWrapper, Coordinates}
 import me.ilinskiy.chess.game.Move
 
+import scala.language.implicitConversions
 import scala.util.Random
 
 /**
@@ -26,4 +27,6 @@ object AIUtil {
   implicit class Time(underlying: Int) {
     def secondsToMillis: Long = underlying * 1000L
   }
+
+  implicit def tuple2Coordinates(tuple: (Int, Int)): Coordinates = new Coordinates(tuple._1, tuple._2)
 }
