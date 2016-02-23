@@ -1,7 +1,8 @@
 package me.ilinskiy.ChessAI
 
-import me.ilinskiy.chess.chessBoard.{BoardWrapper, PieceColor}
-import me.ilinskiy.chess.game.{GameRunner, GameUtil, Move}
+import me.ilinskiy.chess.chessboard.{BoardWrapper, PieceColor}
+import me.ilinskiy.chess.game.moves.Move
+import me.ilinskiy.chess.game.{GameRunner, GameUtil}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._

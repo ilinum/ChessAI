@@ -1,8 +1,9 @@
 package me.ilinskiy.ChessAI
 
 import me.ilinskiy.ChessAI.AIUtil.Time
-import me.ilinskiy.chess.chessBoard._
-import me.ilinskiy.chess.game.{GameRunner, GameUtil, Move, Player}
+import me.ilinskiy.chess.chessboard._
+import me.ilinskiy.chess.game.moves.Move
+import me.ilinskiy.chess.game.{GameRunner, GameUtil, Player}
 
 /**
  * Author: Svyatoslav Ilinskiy
@@ -18,7 +19,7 @@ class AI(myColor: PieceColor) extends Player {
     val moveNeededBy =
       if (timeout > 0) Some(System.currentTimeMillis() + timeout) //yay for magic numbers!
       else None
-    val boardWrapper: BoardWrapper = ChessBoardUtil.getBoardWrapperCopy(board)
+    val boardWrapper: BoardWrapper = BoardWrapper.getCopy(board)
     MoveMaker.getMove(boardWrapper, myColor, moveNeededBy)
   }
 

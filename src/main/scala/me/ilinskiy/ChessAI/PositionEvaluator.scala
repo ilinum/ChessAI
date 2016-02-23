@@ -1,8 +1,9 @@
 package me.ilinskiy.ChessAI
 
-import me.ilinskiy.chess.chessBoard.PieceType._
-import me.ilinskiy.chess.chessBoard._
-import me.ilinskiy.chess.game.{GameUtil, Move}
+import me.ilinskiy.chess.chessboard._
+import me.ilinskiy.chess.game.GameUtil
+import me.ilinskiy.chess.game.moves.Move
+import me.ilinskiy.chess.chessboard.PieceType._
 
 /**
  * Author: Svyatoslav Ilinskiy
@@ -23,7 +24,7 @@ object PositionEvaluator {
 
   def evaluateCurrentPosition(board: Board): Int = {
     val ourColor = board.whoseTurnIsIt()
-    val opponentColor = ChessBoardUtil.inverse(ourColor)
+    val opponentColor = ourColor.inverse()
     val difference = strengthForColor(ourColor, board) - strengthForColor(opponentColor, board)
 
     (GameUtil.getAvailableMoves(opponentColor, board).size(), GameUtil.getAvailableMoves(ourColor, board).size()) match {

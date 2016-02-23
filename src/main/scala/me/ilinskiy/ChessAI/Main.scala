@@ -1,8 +1,8 @@
 package me.ilinskiy.ChessAI
 
-import me.ilinskiy.chess.chessBoard.PieceColor
+import me.ilinskiy.chess.chessboard.PieceColor
 import me.ilinskiy.chess.game.GameRunner
-import me.ilinskiy.chess.ui.JSwingUserPlayer
+import me.ilinskiy.chess.ui.{JSwingChessPainter, JSwingUserPlayer}
 
 /**
  * Author: Svyatoslav Ilinskiy
@@ -10,9 +10,11 @@ import me.ilinskiy.chess.ui.JSwingUserPlayer
  */
 object Main {
   def main(args: Array[String]) {
-    GameRunner.askTimeOut()
+    val runner = new GameRunner(new JSwingChessPainter)
+    runner.askTimeOut()
     do {
-      GameRunner.runGame(new AI(PieceColor.Black), new JSwingUserPlayer(PieceColor.White))
-    } while (GameRunner.askToPlayAgain())
+      runner.runGame(new AI(PieceColor.Black), new JSwingUserPlayer(PieceColor.White))
+    } while (runner.askToPlayAgain())
+    runner.dispose()
   }
 }
